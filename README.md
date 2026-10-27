@@ -214,3 +214,110 @@ tests/              unittest suite + offline fixtures
 ```
 
 MIT. Made by [Jake Schincariol](https://opusjake.ai).
+
+---
+
+# Day Trader Web - Production Web Application
+
+Real, production-ready web application based on the functionality and documented behavior of the day-trader-skill repository. Not a static demo - real backend logic, real data sources, real calculations.
+
+Live web terminal: dark trading dashboard + FastAPI backend + WebSocket live updates.
+
+## Quick Start (Local)
+
+### Backend
+
+```bash
+cp .env.example .env
+# edit DATABASE_URL, SEC_USER_AGENT, SESSION_SECRET etc.
+pip install -r backend/requirements.txt
+uvicorn backend.api.main:app --host 0.0.0.0 --port 8000 --reload
+# Health: http://localhost:8000/api/health
+# Docs: http://localhost:8000/docs
+```
+
+Worker (scanner/entry/alert live monitoring):
+
+```bash
+python -m backend.workers.main
+```
+
+### Frontend
+
+```bash
+cd frontend
+npm install
+npm run build   # production
+npm run dev     # dev at http://localhost:5173
+```
+
+Configure `VITE_API_URL` and `VITE_WS_URL` in `frontend/.env` or via env:
+
+```
+VITE_API_URL=http://localhost:8000
+VITE_WS_URL=ws://localhost:8000
+```
+
+### Docker
+
+```bash
+docker-compose up --build
+# frontend http://localhost:5173, backend http://localhost:8000
+```
+
+## Verify
+
+```bash
+curl http://localhost:8000/api/health
+# {"status":"ok","database":"ok","redis":"ok","workers":"ok","websocket":"ok"}
+
+python3 -m unittest discover -s tests -v
+# 315 tests OK
+```
+
+## Deployment
+
+### Backend on Render
+
+- Build: `pip install -r backend/requirements.txt`
+- Start: `uvicorn backend.api.main:app --host 0.0.0.0 --port $PORT`
+- Worker: `python -m backend.workers.main`
+- Env vars: `DATABASE_URL`, `REDIS_URL`, `SEC_USER_AGENT`, `SESSION_SECRET`, `ENCRYPTION_KEY`, `AI_API_KEY`, `CORS_ORIGINS`
+- Already configured in `render.yaml`
+
+### Frontend on Vercel
+
+- Build: `npm install && npm run build` (from `frontend/`)
+- Output: `frontend/dist`
+- Env: `VITE_API_URL=https://your-api.onrender.com`, `VITE_WS_URL=wss://your-api.onrender.com`
+- Already configured in `vercel.json`
+
+## API
+
+All 11 skills exposed as web modules:
+
+- `GET /api/health`, `GET /api/market/status`, `GET /api/market/quote/:symbol`, `GET /api/market/chart/:symbol`
+- `POST /api/scanner/run`, `GET /api/scanner/status`, `GET /api/scanner/results/:id`
+- `GET /api/news/:symbol`, `POST /api/entry/check`, `POST /api/entry/watch`, `GET /api/entry/status/:symbol`
+- `POST /api/exit/plan`, `GET /api/exit/plan/:symbol`, `POST /api/timemachine/run`, `GET /api/timemachine/:id`
+- `POST /api/budget/calculate`, `POST /api/risk/check`, `POST /api/alerts`, `GET /api/alerts`, `DELETE /api/alerts/:id`
+- `GET /api/analyst/:symbol`, `GET /api/pelosi`, `POST /api/paper/order-preview`, `POST /api/paper/order-confirm`, `GET /api/paper/positions`
+- `POST /api/auth/signup`, `POST /api/auth/login`, `GET /api/auth/watchlist`
+- `GET /api/settings`, `POST /api/settings/ai`, `GET /api/system/status`
+- WebSocket `/ws` with events: `market.quote`, `scanner.progress`, `entry.triggered`, `timemachine.completed`, `alert.triggered`, etc.
+
+Every displayed market value comes from configured backend/data source. If provider fails: `DATA UNAVAILABLE` or `PARTIAL DATA` - never fake prices.
+
+## Architecture
+
+```
+Market Data -> Backend Worker -> Cache (Redis/in-memory) -> Event Bus -> WebSocket -> Browser
+Scanner -> News -> Entry -> Exit -> Time Machine -> Budget -> Risk -> Paper (approval required)
+```
+
+- Python backend preserves original repository rules (5-minute bars, completed-bar validation, 10,000 replays, etc.)
+- PostgreSQL prod, SQLite dev, Redis optional
+- JWT auth, watchlists per account, paper trading only (real-money disabled)
+- Premium dark terminal UI, 60 FPS, WebSocket auto-reconnect, mobile responsive
+
+See `.env.example`, `render.yaml`, `vercel.json`, `docker-compose.yml` for full config.
