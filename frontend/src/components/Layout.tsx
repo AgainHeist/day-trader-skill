@@ -60,13 +60,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <aside className="hidden lg:flex flex-col w-[260px] shrink-0 bg-[#0f1629] border-r border-[#1e2d4a] sticky top-0 h-screen overflow-y-auto">
         <div className="p-5 border-b border-[#1e2d4a]">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-white">D</div>
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-600 flex items-center justify-center font-bold text-white text-xs">AB</div>
             <div>
-              <div className="font-bold text-white leading-none">DAY TRADER</div>
-              <div className="text-[10px] tracking-[0.2em] text-cyan-400">WEB TERMINAL</div>
+              <div className="font-bold text-white leading-none tracking-wide">ALi BOSS</div>
+              <div className="text-[10px] tracking-[0.2em] text-cyan-400">PREMIUM TERMINAL</div>
             </div>
           </div>
           <div className="mt-3 px-2 py-1 rounded bg-amber-500/10 border border-amber-500/30 text-[11px] font-bold text-amber-400 text-center tracking-widest">PAPER MODE</div>
+          <div className="mt-2 text-center text-[10px] tracking-widest font-bold text-slate-500">Power By ALi</div>
         </div>
         <nav className="flex-1 p-3 space-y-1">
           {nav.map(item => {
@@ -79,12 +80,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             )
           })}
         </nav>
-        <div className="p-4 border-t border-[#1e2d4a] text-xs text-slate-500">
+        <div className="p-4 border-t border-[#1e2d4a] text-xs text-slate-500 space-y-2">
           <div className="flex items-center gap-2">
             <span className={`w-2 h-2 rounded-full ${connectionStatus==='Connected' ? 'bg-emerald-500' : connectionStatus==='Reconnecting' ? 'bg-amber-500 animate-pulse' : 'bg-red-500'}`}></span>
             {connectionStatus}
           </div>
-          <div className="mt-2 text-[11px]">© Day Trader Skill v2 • MIT</div>
+          <a href="https://t.me/alionera" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 text-cyan-400 hover:text-cyan-300 font-semibold">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.16 19.5c-.07-.55-.13-1.4-.05-2l1.02-4.02L12 18l4.5-2.7-1.5 4.02c.08.6.02 1.45-.05 2A10 10 0 0 0 12 2z"/></svg>
+            Support: @alionera
+          </a>
+          <div className="text-[11px]">© ALi BOSS • Power By ALi</div>
+          <div className="text-[10px] opacity-60">Day Trader Skill v2 • MIT</div>
         </div>
       </aside>
 
@@ -117,6 +123,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
             <button type="submit" className="px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg text-sm font-semibold">Go</button>
           </form>
+          <a href="https://t.me/alionera" target="_blank" rel="noopener noreferrer" className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-sky-500/15 text-sky-400 border border-sky-500/30 text-xs font-bold hover:bg-sky-500/25">
+            ✈ @alionera
+          </a>
           <div className="flex items-center gap-2">
             {isAuthenticated ? (
               <button onClick={()=>{ localStorage.removeItem('token'); setUser(null); }} className="p-2 rounded-lg bg-[#1e2d4a] text-slate-300"><User size={16} /></button>

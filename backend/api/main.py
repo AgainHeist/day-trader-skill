@@ -7,8 +7,8 @@ from backend.db import models
 import os
 
 app = FastAPI(
-    title="Day Trader Web API",
-    description="Production backend for Day Trader Skill - 11 modules, real Yahoo/SEC/House data, no fake values",
+    title="ALi BOSS - Premium Trading Terminal API",
+    description="ALi BOSS Premium Terminal - Production backend for Day Trader Skill - 11 modules, real Yahoo/SEC/House data, no fake values - Power By ALi",
     version="2.0.0",
 )
 

@@ -34,10 +34,11 @@ export default function Dashboard() {
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center gap-3">
-        <h1 className="text-2xl font-bold text-white">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-white">ALi BOSS Dashboard</h1>
         <Badge color="purple">LIVE DATA</Badge>
         {quote?.status==='DATA UNAVAILABLE' && <Badge color="amber">DATA DELAYED</Badge>}
-        <span className="text-xs text-slate-500">Last update: {new Date().toLocaleTimeString()} ET</span>
+        <span className="text-xs text-slate-500">Last update: {new Date().toLocaleTimeString()} ET • Power By ALi</span>
+        <a href="https://t.me/alionera" target="_blank" className="ml-auto text-xs px-3 py-1 rounded-full bg-sky-500/15 text-sky-400 border border-sky-500/30">Support @alionera</a>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">

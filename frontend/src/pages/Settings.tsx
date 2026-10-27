@@ -65,6 +65,18 @@ export default function Settings() {
         <Card title="Security">
           <div className="text-xs text-slate-400">Secrets never exposed in frontend JS • Env vars on server • HTTPS • CSRF/XSS • Rate limiting • JWT auth</div>
         </Card>
+
+        <Card title="Support - ALi BOSS" subtitle="Power By ALi">
+          <div className="flex items-center gap-3 p-3 bg-sky-500/10 border border-sky-500/30 rounded-lg">
+            <span className="text-2xl">✈</span>
+            <div>
+              <div className="font-bold text-white">Telegram Support</div>
+              <a href="https://t.me/alionera" target="_blank" rel="noopener noreferrer" className="text-sky-400 hover:text-sky-300 font-bold">@alionera</a>
+              <div className="text-xs text-slate-400">24/7 support - ALi BOSS team</div>
+            </div>
+          </div>
+          <div className="mt-3 text-center text-xs font-bold tracking-widest text-slate-500">Power By ALi • ALi BOSS Premium Terminal</div>
+        </Card>
       </div>
       <Card title="Raw Settings JSON">
         <pre className="p-3 bg-[#0a0e1a] border border-[#1e2d4a] rounded-lg text-xs overflow-x-auto max-h-[300px] overflow-y-auto">{JSON.stringify(settings, null, 2)}</pre>
