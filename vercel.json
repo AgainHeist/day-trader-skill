@@ -3,11 +3,11 @@
   "outputDirectory": "frontend/dist",
   "framework": "vite",
   "rewrites": [
-    { "source": "/api/:path*", "destination": "https://day-trader-api.onrender.com/api/:path*" },
-    { "source": "/ws", "destination": "https://day-trader-api.onrender.com/ws" }
+    { "source": "/api/:path*", "destination": "https://day-trader-skill-x47a.onrender.com/api/:path*" },
+    { "source": "/ws", "destination": "https://day-trader-skill-x47a.onrender.com/ws" }
   ],
   "env": {
-    "VITE_API_URL": "https://day-trader-api.onrender.com",
-    "VITE_WS_URL": "wss://day-trader-api.onrender.com"
+    "VITE_API_URL": "https://day-trader-skill-x47a.onrender.com",
+    "VITE_WS_URL": "wss://day-trader-skill-x47a.onrender.com"
   }
 }

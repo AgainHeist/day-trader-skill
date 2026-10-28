@@ -25,7 +25,7 @@ services:
       - key: AI_API_KEY
         sync: false
       - key: CORS_ORIGINS
-        value: https://day-trader-web.vercel.app
+        value: https://day-trader-web.vercel.app,https://day-trader-skill-x47a.onrender.com,https://*.vercel.app
 
   - type: worker
     name: day-trader-worker

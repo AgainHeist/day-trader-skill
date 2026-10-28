@@ -17,13 +17,12 @@ origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
 for dev in ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"]:
     if dev not in origins:
         origins.append(dev)
-# Allow all origins for preview/sandbox (credentials disabled to allow wildcard)
-is_preview = any("e2b.app" in o for o in origins) or os.getenv("E2B_SANDBOX") == "true"
-if is_preview:
-    # Use wildcard with proper config for preview - allow all origins
+# Allow vercel and preview wildcards
+has_wildcard = any("e2b.app" in o or "vercel.app" in o or "*" in o for o in origins) or os.getenv("E2B_SANDBOX") == "true"
+if has_wildcard:
     app.add_middleware(
         CORSMiddleware,
-        allow_origin_regex=r"https://.*\.e2b\.app",
+        allow_origin_regex=r"https://.*\.(e2b\.app|vercel\.app)",
         allow_credentials=False,
         allow_methods=["*"],
         allow_headers=["*"],
