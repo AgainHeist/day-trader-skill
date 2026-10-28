@@ -12,7 +12,7 @@ app = FastAPI(
     version="2.0.0",
 )
 
-# CORS — allow localhost + preview hosts + vercel
+# CORS - allow localhost + preview hosts + vercel
 origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
 for dev in ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"]:
     if dev not in origins:
@@ -20,7 +20,7 @@ for dev in ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:
 # Allow all origins for preview/sandbox (credentials disabled to allow wildcard)
 is_preview = any("e2b.app" in o for o in origins) or os.getenv("E2B_SANDBOX") == "true"
 if is_preview:
-    # Use wildcard with proper config for preview — allow all origins
+    # Use wildcard with proper config for preview - allow all origins
     app.add_middleware(
         CORSMiddleware,
         allow_origin_regex=r"https://.*\.e2b\.app",
