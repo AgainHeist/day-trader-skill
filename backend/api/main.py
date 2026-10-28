@@ -12,19 +12,37 @@ app = FastAPI(
     version="2.0.0",
 )
 
-# CORS
+# CORS — allow localhost + preview hosts + vercel
 origins = [o.strip() for o in settings.cors_origins.split(",") if o.strip()]
-# Always allow localhost for dev
 for dev in ["http://localhost:5173", "http://localhost:3000", "http://127.0.0.1:5173"]:
     if dev not in origins:
         origins.append(dev)
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=origins if origins != ["*"] else ["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
+# Allow all origins for preview/sandbox (credentials disabled to allow wildcard)
+is_preview = any("e2b.app" in o for o in origins) or os.getenv("E2B_SANDBOX") == "true"
+if is_preview:
+    # Use wildcard with proper config for preview — allow all origins
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origin_regex=r"https://.*\.e2b\.app",
+        allow_credentials=False,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins if origins != ["*"] else ["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
+else:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=origins if origins != ["*"] else ["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 # Init DB on startup
 @app.on_event("startup")
