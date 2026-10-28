@@ -1,0 +1,16 @@
+# Termux / Android - no Rust needed, pure Python wheels
+# Use: pip install --break-system-packages -r backend/requirements-termux.txt
+fastapi==0.104.1
+uvicorn==0.23.2
+pydantic==1.10.13
+python-multipart==0.0.9
+python-jose==3.3.0
+passlib==1.7.4
+sqlalchemy==2.0.27
+httpx==0.25.2
+websockets==12.0
+redis==5.0.3
+python-dotenv==1.0.0
+email-validator==2.1.0
+# bcrypt and pydantic-settings removed - not needed on Termux (uses pbkdf2)
+# alembic optional - not needed to run

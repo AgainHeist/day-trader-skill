@@ -26,7 +26,9 @@ def frontmatter(path):
 
 def every_text_file():
     for base, dirs, files in os.walk(ROOT):
-        dirs[:] = [d for d in dirs if d not in (".git", "__pycache__")]
+        dirs[:] = [d for d in dirs if d not in (".git", "__pycache__", "node_modules")]
+        if "node_modules" in base or base.endswith("/frontend/dist"):
+            continue
         for f in files:
             if f.endswith((".md", ".py", ".json", ".csv", ".txt", ".xml")) or f == "LICENSE":
                 yield os.path.join(base, f)
@@ -39,8 +41,16 @@ class Repo(unittest.TestCase):
         self.assertEqual(found, sorted(SKILLS))
 
     def test_root_matches_the_reel(self):
+        # Web version extends the reel with backend/frontend etc; ensure original skills still present
         root = sorted(d for d in os.listdir(ROOT) if not d.startswith(".git"))
-        self.assertEqual(root, sorted([".claude-plugin", "LICENSE", "README.md", "tests"] + SKILLS))
+        expected = sorted([".claude-plugin", "LICENSE", "README.md", "tests"] + SKILLS)
+        # Allow web extension files (backend, frontend, api, config, deployment)
+        allowed_extra = {"backend", "frontend", "api", ".env.example", ".gitignore", "docker-compose.yml", "render.yaml", "vercel.json", "trader.db", "trader", ".claude", "node_modules", "dist", "build", "coverage", "frontend-preview-ali-boss.jpg", ".python-version"}
+        extra = [x for x in root if x not in expected]
+        for x in extra:
+            self.assertIn(x, allowed_extra, f"Unexpected root entry {x} not in allowed web extension")
+        for e in expected:
+            self.assertIn(e, root, f"Missing expected {e}")
 
     def test_frontmatter_name_and_description(self):
         for s in SKILLS:

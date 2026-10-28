@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+dist/
+build/
+*.db
+trader.db
+
+# Trader state (not secrets)
+trader/
+!trader/*.example.json
+!trader/*.example.json
+
+# Env
+.env
+.env.local
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# IDE
+.vscode/
+.idea/
+
+# Render/Vercel
+.vercel
+.render
+frontend/preview.jpg

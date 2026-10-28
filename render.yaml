@@ -1,0 +1,64 @@
+services:
+  - type: web
+    name: day-trader-api
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn backend.api.main:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DATABASE_URL
+        fromDatabase:
+          name: daytrader-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: daytrader-redis
+          type: redis
+          property: connectionString
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: SEC_USER_AGENT
+        sync: false
+      - key: AI_API_KEY
+        sync: false
+      - key: CORS_ORIGINS
+        value: https://day-trader-web.vercel.app,https://day-trader-skill-x47a.onrender.com,https://*.vercel.app
+
+  - type: worker
+    name: day-trader-worker
+    env: python
+    region: oregon
+    plan: starter
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: python -m backend.workers.main
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: DATABASE_URL
+        fromDatabase:
+          name: daytrader-db
+          property: connectionString
+      - key: REDIS_URL
+        fromService:
+          name: daytrader-redis
+          type: redis
+          property: connectionString
+      - key: SESSION_SECRET
+        sync: false
+        fromService:
+          name: day-trader-api
+          type: web
+          property: SESSION_SECRET
+
+databases:
+  - name: daytrader-db
+    plan: starter
+    ipAllowList: []
+
+services_redis:
+  - name: daytrader-redis
+    plan: free
+    maxmemoryPolicy: allkeys-lru
