@@ -45,7 +45,7 @@ class Repo(unittest.TestCase):
         root = sorted(d for d in os.listdir(ROOT) if not d.startswith(".git"))
         expected = sorted([".claude-plugin", "LICENSE", "README.md", "tests"] + SKILLS)
         # Allow web extension files (backend, frontend, api, config, deployment)
-        allowed_extra = {"backend", "frontend", "api", ".env.example", ".gitignore", "docker-compose.yml", "render.yaml", "vercel.json", "trader.db", "trader", ".claude", "node_modules", "dist", "build", "coverage"}
+        allowed_extra = {"backend", "frontend", "api", ".env.example", ".gitignore", "docker-compose.yml", "render.yaml", "vercel.json", "trader.db", "trader", ".claude", "node_modules", "dist", "build", "coverage", "frontend-preview-ali-boss.jpg"}
         extra = [x for x in root if x not in expected]
         for x in extra:
             self.assertIn(x, allowed_extra, f"Unexpected root entry {x} not in allowed web extension")

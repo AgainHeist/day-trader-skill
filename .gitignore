@@ -41,3 +41,4 @@ npm-debug.log*
 # Render/Vercel
 .vercel
 .render
+frontend/preview.jpg
